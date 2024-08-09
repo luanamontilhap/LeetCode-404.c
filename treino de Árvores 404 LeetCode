@@ -1,0 +1,61 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node {
+  int val;
+  struct Node *left;
+  struct Node *right;
+} Node;
+
+int somafolhasesqh(struct Node* no, int ehesquerda){
+  if (no == NULL){
+    return 0;
+  }
+  if (no -> left  && no -> right == 0){
+    return ehesquerda ? no->val:0 ;
+  }
+  int somaEsquerda = somafolhasesqh(no -> left, 1);
+  int somaDireita = somafolhasesqh (no -> right, 0);
+   return somaEsquerda + somaDireita;
+  }
+
+  int somaDasFolhasEsquerda(Node* raiz) {
+      return somafolhasesqh(raiz, 0); 
+  }
+
+  // Função para criar um novo nó da árvore
+  struct Node* criarNo(int valor) {
+      Node* novoNo = (Node*)malloc(sizeof(TreeNode));
+      novoNo->val = valor;
+      novoNo->left = NULL;
+      novoNo->right = NULL;
+      return novoNo;
+  }
+
+  // Função principal para testar o código
+  int main() {
+      // Cria uma árvore de exemplo:
+      //     3
+      //    / \
+      //   9  20
+      //      / \
+      //     15  7
+      Node* raiz = criarNo(3);
+      raiz->left = criarNo(9);
+      raiz->right = criarNo(20);
+      raiz->right->left = criarNo(15);
+      raiz->right->right = criarNo(7);
+
+      int resultado = somaDasFolhasEsquerda(raiz);
+      printf("Soma das folhas à esquerda: %d\n", resultado); // Saída deve ser 24 (9 + 15)
+
+      // Libera a memória alocada
+      free(raiz->left);
+      free(raiz->right->left);
+      free(raiz->right->right);
+      free(raiz->right);
+      free(raiz);
+
+      return 0;
+  }
+}
